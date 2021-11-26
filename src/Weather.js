@@ -14,8 +14,34 @@ const StyledWeather = styled.div`
 `;
 
 export default function Weather() {
-    const cityName = 'London,uk';
-    const url = `${settings.urls.api.weatherByCityName}${cityName}${settings.keys.weatherApiKey}`;
+    // const cityName = 'London,uk';
+    // const url = `${settings.urls.api.weatherByCityName}${cityName}${settings.keys.weatherApiKey}`;
+
+    const [location, setLocation] = useState({});
+
+    useEffect(() => {
+        console.log('getting location');
+        if (window.navigator.geolocation) {
+            window.navigator.geolocation.getCurrentPosition(
+                handleFoundLocation,
+                handleError
+            );
+        }
+    }, []);
+
+    const handleFoundLocation = data => {
+        setLocation({
+            lat: data.coords.latitude,
+            lon: data.coords.longitude,
+        });
+    };
+
+    const handleError = err => console.log(err);
+
+    // const lat = '52.2';
+    // const lon = '0.12';
+
+    const url = `${settings.urls.api.weatherByLatLon}lat=${location.lat}&lon=${location.lon}${settings.keys.weatherApiKey}`;
 
     const [weather, setWeather] = useState('');
     // const [weather] = useState(exampleData);
@@ -31,7 +57,7 @@ export default function Weather() {
             1000,
             true
         );
-    }, []);
+    }, [location]);
 
     return (
         <>
@@ -42,7 +68,7 @@ export default function Weather() {
                     <div>{`${formatDate(weather.sys.sunset)}pm`}</div>
                 </StyledWeather>
             ) : (
-                <div>No data</div>
+                <div>Loading</div>
             )}
         </>
     );
