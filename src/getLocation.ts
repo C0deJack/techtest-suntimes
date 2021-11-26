@@ -1,11 +1,23 @@
-export default function getLocation(): Location {
-    console.log('getting location');
+import getData from './helpers/getData';
 
+export default async function getLocation(): Promise<Location> {
     // Set a fallback of London.
-    const location: Location = {
+    let location: Location = {
         lat: '51.2',
         lon: '0.12',
     };
+
+    if (window.navigator.geolocation) {
+        location = getLocationByGeolocation();
+    } else {
+        location = await getLocationByIp();
+    }
+
+    return location;
+}
+
+function getLocationByGeolocation(): Location {
+    let location: Location;
 
     const handleFoundLocation = (data: GeolocationPosition) => {
         location.lat = data.coords.latitude.toString();
@@ -13,22 +25,30 @@ export default function getLocation(): Location {
     };
 
     const handleError = (err: GeolocationPositionError) => {
-        // get by IP address
-        console.log('geo failed 2 - get by ip');
+        getLocationByIp();
         console.log(err);
     };
 
-    if (window.navigator.geolocation) {
-        window.navigator.geolocation.getCurrentPosition(
-            handleFoundLocation,
-            handleError
-        );
-    } else {
-        // get by IP address
-        console.log('geo failed 1- get by ip');
-    }
+    window.navigator.geolocation.getCurrentPosition(
+        handleFoundLocation,
+        handleError
+    );
 
-    return location;
+    return {
+        lat: '0',
+        lon: '0',
+    };
+}
+
+function getLocationByIp(): Promise<Location> {
+    return getData('http://ip-api.com/json')
+        .then(data => {
+            return {
+                lat: data.lat,
+                lon: data.lon,
+            };
+        })
+        .catch();
 }
 
 export type Location = {

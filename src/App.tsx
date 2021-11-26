@@ -1,7 +1,8 @@
+import { ReactElement } from 'react';
 import './App.css';
 import SunTimes from './SunTimes';
 
-function App() {
+function App(): ReactElement {
     return (
         <div className='App'>
             <SunTimes />
