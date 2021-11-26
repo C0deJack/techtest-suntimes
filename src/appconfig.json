@@ -1,0 +1,5 @@
+{
+	"api": {
+		"sunTimesByLatLon": "https://api.sunrise-sunset.org/json?"
+	}
+}

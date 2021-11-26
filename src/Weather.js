@@ -31,7 +31,7 @@ export default function Weather() {
 
     const handleError = err => console.log(err);
 
-    const url = `${settings.urls.api.sunTimesByLatLon}lat=${location.lat}&lng=${location.lon}`;
+    const url = `${settings.api.sunTimesByLatLon}lat=${location.lat}&lng=${location.lon}`;
 
     const [weather, setWeather] = useState('');
 
