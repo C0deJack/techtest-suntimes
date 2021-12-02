@@ -78,11 +78,7 @@ export default function SunTimes(): ReactElement {
     });
 
     useEffect(() => {
-        getLocation()
-            .then(data => {
-                setLocation(data);
-            })
-            .catch(err => console.log(err));
+        getLocation(setLocation);
     }, []);
 
     const [sunTimes, setSunTimes] = useState<SunTimesType | '' | any>('');

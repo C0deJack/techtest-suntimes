@@ -1,31 +1,23 @@
 import getData from './helpers/getData';
 
-export default async function getLocation(): Promise<Location> {
-    // Set a fallback of London.
-    let location: Location = {
-        lat: '51.2',
-        lon: '0.12',
-    };
-
+export default function getLocation(setLocation: SetLocationType): void {
     if (window.navigator.geolocation) {
-        location = getLocationByGeolocation();
+        getLocationByGeolocation(setLocation);
     } else {
-        location = await getLocationByIp();
+        getLocationByIp(setLocation);
     }
-
-    return location;
 }
 
-function getLocationByGeolocation(): Location {
-    let location: Location;
-
+function getLocationByGeolocation(setLocation: SetLocationType): void {
     const handleFoundLocation = (data: GeolocationPosition) => {
-        location.lat = data.coords.latitude.toString();
-        location.lon = data.coords.longitude.toString();
+        setLocation({
+            lat: data.coords.latitude.toString(),
+            lon: data.coords.longitude.toString(),
+        });
     };
 
     const handleError = (err: GeolocationPositionError) => {
-        getLocationByIp();
+        getLocationByIp(setLocation);
         console.log(err);
     };
 
@@ -33,23 +25,25 @@ function getLocationByGeolocation(): Location {
         handleFoundLocation,
         handleError
     );
-
-    return {
-        lat: '0',
-        lon: '0',
-    };
 }
 
-function getLocationByIp(): Promise<Location> {
-    return getData('http://ip-api.com/json')
+function getLocationByIp(setLocation: SetLocationType): void {
+    getData('http://ip-api.com/json')
         .then(data => {
-            return {
+            setLocation({
                 lat: data.lat,
                 lon: data.lon,
-            };
+            });
         })
         .catch();
 }
+
+type SetLocationType = React.Dispatch<
+    React.SetStateAction<{
+        lat: string,
+        lon: string,
+    }>
+>;
 
 export type Location = {
     lat: string,
