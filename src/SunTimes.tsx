@@ -7,6 +7,7 @@ import nightImage from './assets/night.jpg';
 import sunriseIcon from './assets/sunrise.png';
 import sunsetIcon from './assets/sunset.png';
 import Loading from './loading';
+import Time from './Time';
 
 const StyledSunTimes = styled.div`
     overflow: hidden;
@@ -35,11 +36,6 @@ const StyledSunTimes = styled.div`
         background-color: #000;
     }
 
-    h2 {
-        font-size: 1.5rem;
-        font-weight: 500;
-    }
-
     img.background {
         position: absolute;
         z-index: -1;
@@ -50,23 +46,9 @@ const StyledSunTimes = styled.div`
         background-color: #000000b3; // Backup background colour.
     }
 
-    div.time {
-        font-size: 2rem;
-        font-weight: 700;
-        text-transform: lowercase;
-    }
-
-    img.icon {
-        width: 100px;
-    }
-
     @media (min-width: 576px) {
         div.sunrise {
             width: 50vw;
-        }
-
-        img.icon {
-            width: 150px;
         }
     }
 `;
@@ -100,13 +82,17 @@ export default function SunTimes(): ReactElement {
             <div className='sunrise' title='sunrise and sunset'>
                 {sunTimes ? (
                     <>
-                        <img className='icon' src={sunriseIcon} />
-                        <div className='time'>{sunTimes.sunrise}</div>
-                        <h2>Sunrise</h2>
+                        <Time
+                            title={'Sunrise'}
+                            icon={sunriseIcon}
+                            time={sunTimes.sunrise}
+                        />
                         <hr />
-                        <img className='icon' src={sunsetIcon} />
-                        <div className='time'>{sunTimes.sunset}</div>
-                        <h2>Sunset</h2>
+                        <Time
+                            title={'Sunset'}
+                            icon={sunsetIcon}
+                            time={sunTimes.sunset}
+                        />
                     </>
                 ) : (
                     <Loading />
