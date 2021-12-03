@@ -18,7 +18,7 @@ function getLocationByGeolocation(setLocation: SetLocationType): void {
 
     const handleError = (err: GeolocationPositionError) => {
         getLocationByIp(setLocation);
-        console.log(err);
+        console.log(err.message);
     };
 
     window.navigator.geolocation.getCurrentPosition(

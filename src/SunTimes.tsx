@@ -2,12 +2,11 @@ import { ReactElement, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import getLocation from './getLocation';
 import getSunTimes, { SunTimesType } from './getSunTimes';
-import dayImage from './assets/day.jpg';
-import nightImage from './assets/night.jpg';
 import sunriseIcon from './assets/sunrise.png';
 import sunsetIcon from './assets/sunset.png';
 import Loading from './loading';
 import Time from './Time';
+import BackgroundImage from './BackgroundImage';
 
 const StyledSunTimes = styled.div`
     overflow: hidden;
@@ -36,16 +35,6 @@ const StyledSunTimes = styled.div`
         background-color: #000;
     }
 
-    img.background {
-        position: absolute;
-        z-index: -1;
-        min-height: 100vh;
-        min-width: 100vw;
-        top: 0;
-        left: 0;
-        background-color: #000000b3; // Backup background colour.
-    }
-
     @media (min-width: 576px) {
         div.sunrise {
             width: 50vw;
@@ -63,6 +52,7 @@ export default function SunTimes(): ReactElement {
         getLocation(setLocation);
     }, []);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [sunTimes, setSunTimes] = useState<SunTimesType | '' | any>('');
 
     useEffect(() => {
@@ -72,10 +62,6 @@ export default function SunTimes(): ReactElement {
             })
             .catch(err => console.log(err));
     }, [location]);
-
-    const isDay = true;
-
-    const backgroundImage = isDay ? dayImage : nightImage;
 
     return (
         <StyledSunTimes>
@@ -99,10 +85,7 @@ export default function SunTimes(): ReactElement {
                 )}
             </div>
 
-            <img
-                className='background'
-                src={backgroundImage ? backgroundImage : ''}
-            />
+            {sunTimes && <BackgroundImage sunTimes={sunTimes} />}
         </StyledSunTimes>
     );
 }
