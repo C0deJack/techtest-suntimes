@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Time component snapshot 1`] = `
+<section
+  className="sc-bdvvtL ffMMTR"
+>
+  <img
+    className="icon"
+    src="testIconUrl"
+  />
+  <time
+    aria-label="testTitle"
+    role="time"
+  >
+    4:45
+    AM
+  </time>
+  <h2>
+    testTitle
+  </h2>
+</section>
+`;

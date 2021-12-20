@@ -37,7 +37,7 @@ const Time = ({ title, icon, time }: Props): JSX.Element => {
     return (
         <StyledSection>
             <img className='icon' src={icon} />
-            <time>
+            <time aria-label={title} role='time'>
                 {trimmedTime}
                 {amOrPm}
             </time>
